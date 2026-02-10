@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <title>Daily Work Journal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .box {
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: bold;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .progress {
+      font-size: 14px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📘 Daily Work Journal</h1>
+
+<div class="box">
+  <label>📝 आजचं काम:</label>
+  <textarea id="todayWork"></textarea>
+
+  <label>✅ किती काम पूर्ण झालं (%):</label>
+  <input type="number" id="progress" min="0" max="100">
+
+  <div class="progress" id="progressText"></div>
+</div>
+
+<div class="box">
+  <label>💰 आजचं देणं / खर्च:</label>
+  <input type="text" id="debt">
+</div>
+
+<div class="box">
+  <label>📅 उद्याचं काम (Schedule):</label>
+  <textarea id="tomorrowWork"></textarea>
+</div>
+
+<button onclick="saveData()">💾 Save Journal</button>
+
+<script>
+  function saveData() {
+    localStorage.setItem("todayWork", todayWork.value);
+    localStorage.setItem("progress", progress.value);
+    localStorage.setItem("debt", debt.value);
+    localStorage.setItem("tomorrowWork", tomorrowWork.value);
+    progressText.innerText = "✔ " + progress.value + "% काम पूर्ण";
+    alert("Journal Saved!");
+  }
+
+  window.onload = function() {
+    todayWork.value = localStorage.getItem("todayWork") || "";
+    progress.value = localStorage.getItem("progress") || "";
+    debt.value = localStorage.getItem("debt") || "";
+    tomorrowWork.value = localStorage.getItem("tomorrowWork") || "";
+    if(progress.value){
+      progressText.innerText = "✔ " + progress.value + "% काम पूर्ण";
+    }
+  }
+</script>
+
+</body>
+</html>
