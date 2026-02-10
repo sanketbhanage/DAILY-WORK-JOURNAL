@@ -1,96 +1,380 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Daily Work Journal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    :root {
+      --bg: #f3f7ff;
+      --card: #ffffff;
+      --primary: #2643e9;
+      --primary-soft: #e9eeff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --ok: #16a34a;
+      --border: #dbe2f1;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
       margin: 0;
-      padding: 20px;
+      background: linear-gradient(180deg, #edf2ff 0%, #f8fbff 100%);
+      color: var(--text);
+      min-height: 100vh;
     }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+
+    .header {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 24px rgba(38, 67, 233, 0.08);
+      margin-bottom: 18px;
+    }
+
     h1 {
-      text-align: center;
+      margin: 0;
+      font-size: 1.55rem;
     }
-    .box {
-      background: #fff;
-      padding: 15px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+    .sub {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 0.95rem;
     }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 18px rgba(31, 41, 55, 0.05);
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 1.08rem;
+    }
+
     label {
-      font-weight: bold;
+      display: block;
+      font-weight: 600;
+      margin: 10px 0 6px;
+      font-size: 0.92rem;
     }
-    textarea, input {
+
+    input,
+    textarea,
+    select {
       width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      margin-bottom: 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      outline: none;
+      background: #fff;
     }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(38, 67, 233, 0.15);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .progress-wrap {
+      margin-top: 8px;
+      background: var(--primary-soft);
+      border-radius: 999px;
+      height: 10px;
+      overflow: hidden;
+      border: 1px solid #d9e2ff;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #16a34a, #22c55e);
+      transition: width 0.35s ease;
+    }
+
+    .progress-text {
+      margin-top: 6px;
+      font-size: 0.9rem;
+      color: var(--ok);
+      font-weight: 600;
+    }
+
+    .inline {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .inline-3 {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .footer-actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
     button {
-      width: 100%;
-      padding: 10px;
-      background: #007bff;
-      color: #fff;
       border: none;
-      border-radius: 5px;
-      font-size: 16px;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
     }
-    .progress {
-      font-size: 14px;
-      color: green;
+
+    .primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .secondary {
+      background: #eef2ff;
+      color: #1f2ea3;
+    }
+
+    .muted {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .status {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      min-height: 20px;
+    }
+
+    .today-badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: #243fb8;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 620px) {
+      .inline,
+      .inline-3 {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
+  <main class="container">
+    <section class="header">
+      <h1>📘 Daily Work Journal (Marathi)</h1>
+      <p class="sub">आजचे काम, पूर्ण झालेलं काम, आजचे देणे आणि उद्याचे schedule — सर्व एकाच ठिकाणी सेव्ह करा.</p>
+      <span class="today-badge" id="todayDate"></span>
+    </section>
 
-<h1>📘 Daily Work Journal</h1>
+    <section class="grid">
+      <article class="card">
+        <h2>📝 आजचा कामाचा रेकॉर्ड</h2>
 
-<div class="box">
-  <label>📝 आजचं काम:</label>
-  <textarea id="todayWork"></textarea>
+        <label for="todayWork">आज काय काम आहे?</label>
+        <textarea id="todayWork" placeholder="उदा. API integration complete करणे..."></textarea>
 
-  <label>✅ किती काम पूर्ण झालं (%):</label>
-  <input type="number" id="progress" min="0" max="100">
+        <div class="inline">
+          <div>
+            <label for="startTime">सुरुवात वेळ</label>
+            <input id="startTime" type="time" />
+          </div>
+          <div>
+            <label for="endTime">समाप्त वेळ</label>
+            <input id="endTime" type="time" />
+          </div>
+        </div>
 
-  <div class="progress" id="progressText"></div>
-</div>
+        <label for="progress">किती काम complete झालं? (%)</label>
+        <input id="progress" type="range" min="0" max="100" value="0" />
+        <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-text" id="progressText">0% complete</div>
+      </article>
 
-<div class="box">
-  <label>💰 आजचं देणं / खर्च:</label>
-  <input type="text" id="debt">
-</div>
+      <article class="card">
+        <h2>💰 आजचे देणे / payment</h2>
 
-<div class="box">
-  <label>📅 उद्याचं काम (Schedule):</label>
-  <textarea id="tomorrowWork"></textarea>
-</div>
+        <div class="inline-3">
+          <div>
+            <label for="amount">रक्कम (₹)</label>
+            <input id="amount" type="number" min="0" placeholder="उदा. 1500" />
+          </div>
+          <div>
+            <label for="paymentType">प्रकार</label>
+            <select id="paymentType">
+              <option value="देणे">देणे</option>
+              <option value="घेणे">घेणे</option>
+              <option value="खर्च">खर्च</option>
+            </select>
+          </div>
+          <div>
+            <label for="paymentStatus">स्थिती</label>
+            <select id="paymentStatus">
+              <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </div>
 
-<button onclick="saveData()">💾 Save Journal</button>
+        <label for="paymentNote">टीप</label>
+        <textarea id="paymentNote" placeholder="कोणाला द्यायचे/घ्यायचे आहे ते लिहा..."></textarea>
+      </article>
 
-<script>
-  function saveData() {
-    localStorage.setItem("todayWork", todayWork.value);
-    localStorage.setItem("progress", progress.value);
-    localStorage.setItem("debt", debt.value);
-    localStorage.setItem("tomorrowWork", tomorrowWork.value);
-    progressText.innerText = "✔ " + progress.value + "% काम पूर्ण";
-    alert("Journal Saved!");
-  }
+      <article class="card" style="grid-column: 1 / -1;">
+        <h2>📅 उद्याचे काम (Schedule)</h2>
+        <textarea id="tomorrowWork" placeholder="उद्याची प्राधान्य कामे लिहा..."></textarea>
 
-  window.onload = function() {
-    todayWork.value = localStorage.getItem("todayWork") || "";
-    progress.value = localStorage.getItem("progress") || "";
-    debt.value = localStorage.getItem("debt") || "";
-    tomorrowWork.value = localStorage.getItem("tomorrowWork") || "";
-    if(progress.value){
-      progressText.innerText = "✔ " + progress.value + "% काम पूर्ण";
+        <div class="footer-actions">
+          <button class="primary" id="saveBtn">💾 Save Journal</button>
+          <button class="secondary" id="exportBtn">⬇️ Export JSON</button>
+          <button class="muted" id="resetBtn">🧹 Reset Form</button>
+        </div>
+        <div class="status" id="statusText"></div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const fields = [
+      "todayWork",
+      "startTime",
+      "endTime",
+      "progress",
+      "amount",
+      "paymentType",
+      "paymentStatus",
+      "paymentNote",
+      "tomorrowWork"
+    ];
+
+    const progressInput = document.getElementById("progress");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const statusText = document.getElementById("statusText");
+
+    function setTodayDate() {
+      const today = new Date();
+      const formatted = today.toLocaleDateString("mr-IN", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
+      document.getElementById("todayDate").textContent = `आजची तारीख: ${formatted}`;
     }
-  }
-</script>
 
+    function updateProgressUI(value) {
+      const safe = Math.max(0, Math.min(100, Number(value) || 0));
+      progressBar.style.width = `${safe}%`;
+      progressText.textContent = `${safe}% काम complete`;
+    }
+
+    function getFormData() {
+      const data = {};
+      fields.forEach((id) => {
+        data[id] = document.getElementById(id).value;
+      });
+      data.savedAt = new Date().toISOString();
+      return data;
+    }
+
+    function loadData() {
+      const saved = localStorage.getItem("dailyWorkJournal");
+      if (!saved) return;
+
+      try {
+        const data = JSON.parse(saved);
+        fields.forEach((id) => {
+          if (typeof data[id] === "string") {
+            document.getElementById(id).value = data[id];
+          }
+        });
+        updateProgressUI(document.getElementById("progress").value);
+        if (data.savedAt) {
+          statusText.textContent = `शेवटचे सेव्ह: ${new Date(data.savedAt).toLocaleString("mr-IN")}`;
+        }
+      } catch (error) {
+        statusText.textContent = "जुना डेटा वाचताना त्रुटी आली.";
+      }
+    }
+
+    function saveData() {
+      const data = getFormData();
+      localStorage.setItem("dailyWorkJournal", JSON.stringify(data));
+      updateProgressUI(data.progress);
+      statusText.textContent = `✅ Journal सेव्ह झाला (${new Date(data.savedAt).toLocaleString("mr-IN")})`;
+    }
+
+    function exportData() {
+      const data = getFormData();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const dateTag = new Date().toISOString().slice(0, 10);
+      a.href = url;
+      a.download = `daily-work-journal-${dateTag}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      statusText.textContent = "⬇️ Journal JSON export झाला.";
+    }
+
+    function resetForm() {
+      fields.forEach((id) => {
+        const el = document.getElementById(id);
+        el.value = id === "progress" ? 0 : "";
+      });
+      updateProgressUI(0);
+      localStorage.removeItem("dailyWorkJournal");
+      statusText.textContent = "🧹 फॉर्म reset झाला.";
+    }
+
+    progressInput.addEventListener("input", (e) => updateProgressUI(e.target.value));
+    document.getElementById("saveBtn").addEventListener("click", saveData);
+    document.getElementById("exportBtn").addEventListener("click", exportData);
+    document.getElementById("resetBtn").addEventListener("click", resetForm);
+
+    setTodayDate();
+    loadData();
+    updateProgressUI(progressInput.value);
+  </script>
 </body>
 </html>
